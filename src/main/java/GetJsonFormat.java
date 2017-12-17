@@ -7,15 +7,15 @@ import java.net.InetSocketAddress;
 import java.util.stream.Collectors;
 
 /**
- * Class implements Server interface
- * Tasks of class is checking valid Json file or not
+ * Created by eloseva on 15.12.2017
  */
-public class GetJsonFormat implements Server {
+
+public class GetJSONFormat implements Server {
 
     @NotNull
-    private final HttpServer server;
+    private final HttpServer myServer;
     @NotNull
-    private final Gson jsonBuilder;
+    private final Gson Jbuilder;
 
     private static final int PORT = 80;
     private static final int CODE_OK = 200;
@@ -26,21 +26,21 @@ public class GetJsonFormat implements Server {
      *
      * @throws IOException because method create() of HttpServer can throw IOException
      */
-    public GetJsonFormat() throws IOException {
-        this.jsonBuilder = new GsonBuilder().setPrettyPrinting().create();
-        this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        this.server.createContext(ROOT, http -> {
+    public GetJSONFormat() throws IOException {
+        this.Jbuilder= new GsonBuilder().setPrettyPrinting().create();
+        this.myServer= HttpServer.create(new InetSocketAddress(PORT), 0);
+        this.myServer.createContext(ROOT, http -> {
             InputStreamReader isr = new InputStreamReader(http.getRequestBody());
             final String jsonRequest = new BufferedReader(isr).lines().collect(Collectors.joining());
             System.out.println("request:" + jsonRequest);
             String jsonResponse;
             try {
-                Object object = builder.fromJson(jsonRequest, Object.class);
-                jsonResponse = builder.toJson(object);
+                Object object = Jbuilder.fromJson(jsonRequest, Object.class);
+                jsonResponse = Jbuilder.toJson(object);
             } catch (JsonSyntaxException e) {
                 JsonObject jsonError = new JsonObject();
                 jsonError.addProperty("message", e.getMessage());
-                jsonResponse = builder.toJson(jsonError);
+                jsonResponse = Jbuilder.toJson(jsonError);
             }
             System.out.println("response:" + jsonResponse);
             http.sendResponseHeaders(CODE_OK, jsonResponse.length());
@@ -56,7 +56,7 @@ public class GetJsonFormat implements Server {
      * @throws IOException - because constructor of Formatter can throw IOException
      */
     public static void main(String[] args) throws IOException {
-        GetJsonFormat jsonFormat = new GetJsonFormat();
+        GetJSONFormat jsonFormat = new GetJSONFormat();
         jsonFormat.start();
         Runtime.getRuntime().addShutdownHook(new Thread(jsonFormat::stop));
     }
@@ -66,7 +66,7 @@ public class GetJsonFormat implements Server {
      */
     @Override
     public void start() {
-        this.server.start();
+        this.myServer.start();
     }
 
     /**
@@ -74,6 +74,6 @@ public class GetJsonFormat implements Server {
      */
     @Override
     public void stop() {
-        this.server.stop(0);
+        this.myServer.stop(0);
     }
 }
