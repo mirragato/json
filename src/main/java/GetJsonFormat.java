@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 public class GetJSONFormat implements Server {
 
     @NotNull
-    private final HttpServer myServer;
+    private final HttpServer server;
     @NotNull
-    private final Gson Jbuilder;
+    private final Gson builder;
 
     private static final int PORT = 80;
     private static final int CODE_OK = 200;
@@ -27,20 +27,30 @@ public class GetJSONFormat implements Server {
      * @throws IOException because method create() of HttpServer can throw IOException
      */
     public GetJSONFormat() throws IOException {
-        this.Jbuilder= new GsonBuilder().setPrettyPrinting().create();
-        this.myServer= HttpServer.create(new InetSocketAddress(PORT), 0);
-        this.myServer.createContext(ROOT, http -> {
+         this.builder = new GsonBuilder().setPrettyPrinting().create();
+        this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        this.server.createContext(ROOT, http -> {
+            int request_id = 0;
             InputStreamReader isr = new InputStreamReader(http.getRequestBody());
             final String jsonRequest = new BufferedReader(isr).lines().collect(Collectors.joining());
             System.out.println("request:" + jsonRequest);
             String jsonResponse;
             try {
-                Object object = Jbuilder.fromJson(jsonRequest, Object.class);
-                jsonResponse = Jbuilder.toJson(object);
+                Object object = builder.fromJson(jsonRequest, Object.class);
+                jsonResponse = builder.toJson(object);
             } catch (JsonSyntaxException e) {
-                JsonObject jsonError = new JsonObject();
-                jsonError.addProperty("message", e.getMessage());
-                jsonResponse = Jbuilder.toJson(jsonError);
+                String[] errorSplittedString = e.getMessage().split(".+: | at ");
+                jsonResponse = builder.toJson(
+                        new JsonError(
+                                e.hashCode(),
+                                errorSplittedString[1],
+                                "at " + errorSplittedString[2],
+                                jsonRequest,
+                                request_id
+                        ));
+            } finally {
+                //noinspection UnusedAssignment
+                request_id++;
             }
             System.out.println("response:" + jsonResponse);
             http.sendResponseHeaders(CODE_OK, jsonResponse.length());
@@ -66,7 +76,7 @@ public class GetJSONFormat implements Server {
      */
     @Override
     public void start() {
-        this.myServer.start();
+        this.server.start();
     }
 
     /**
@@ -74,6 +84,6 @@ public class GetJSONFormat implements Server {
      */
     @Override
     public void stop() {
-        this.myServer.stop(0);
+        this.server.stop(0);
     }
 }
