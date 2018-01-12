@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * Created by eloseva on 15.12.2017
  */
 
-public class GetJSONFormat implements Server {
+public class GetJsonFormat implements Server {
 
     @NotNull
     private final HttpServer server;
@@ -26,7 +26,7 @@ public class GetJSONFormat implements Server {
      *
      * @throws IOException because method create() of HttpServer can throw IOException
      */
-    public GetJSONFormat() throws IOException {
+    public GetJsonFormat() throws IOException {
          this.builder = new GsonBuilder().setPrettyPrinting().create();
         this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
         this.server.createContext(ROOT, http -> {
@@ -66,7 +66,7 @@ public class GetJSONFormat implements Server {
      * @throws IOException - because constructor of Formatter can throw IOException
      */
     public static void main(String[] args) throws IOException {
-        GetJSONFormat jsonFormat = new GetJSONFormat();
+        GetJsonFormat jsonFormat = new GetJsonFormat();
         jsonFormat.start();
         Runtime.getRuntime().addShutdownHook(new Thread(jsonFormat::stop));
     }
