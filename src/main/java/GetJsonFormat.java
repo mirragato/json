@@ -6,9 +6,6 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.stream.Collectors;
 
-/**
- * Created by eloseva on 15.12.2017
- */
 
 public class GetJsonFormat implements Server {
 
