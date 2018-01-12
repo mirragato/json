@@ -4,7 +4,7 @@ You need to create a stateless-application with REST-interface for validation Js
 
 Send json - receive formatted json or error message
 
-Run ./gradlew docker && docker run -t --rm -p 80:80 validation-server:0.02
+Run docker run -d -p 80:80 github.com/username/projectname
 
 Send file to validation curl -s --data-binary @filename.json http://localhost
 
