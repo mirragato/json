@@ -3,7 +3,9 @@ Json Validation and Formatting server You need to create a stateless-application
 
 Send json - receive formatted json or error message
 
+
 Run docker run `./gradlew docker && docker run -t -p 8000:80 getjsonformat:0.1`
+
 
 Send file to validation `curl -s --data-binary @filename.json http://localhost`
 

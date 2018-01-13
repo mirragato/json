@@ -42,7 +42,7 @@ public class GetJsonFormat implements Server {
                                 e.hashCode(),
                                 errorSplittedString[1],
                                 "at " + errorSplittedString[2],
-                                jsonRequest,
+                                http.getRequestURI().getPath(),
                                 request_id
                         ));
             } finally {
