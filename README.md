@@ -1,10 +1,11 @@
 # json
-Json Validation and Formatting server
-You need to create a stateless-application with REST-interface for validation Json files.
+Json Validation and Formatting server You need to create a stateless-application with REST-interface for validation Json files.
 
 Send json - receive formatted json or error message
 
-Run `docker run -d -p 80:80 github.com/username/projectname`
+
+Run docker run `./gradlew docker && docker run -t -p 8000:80 getjsonformat:0.1`
+
 
 Send file to validation `curl -s --data-binary @filename.json http://localhost`
 
