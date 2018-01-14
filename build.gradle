@@ -18,13 +18,13 @@ buildscript {
 
 }
 
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
 mainClassName = 'GetJsonFormat'
 
 defaultTasks 'docker'
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "4.1"
-}
 
 task fatJar(type: Jar) {
     manifest {
