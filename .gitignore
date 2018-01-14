@@ -24,3 +24,14 @@ hs_err_pid*
 .idea/
 target/
 *.iml
+
+.gradle
+build/
+lib/
+web/
+.idea
+target/
+.build.gradle.swp
+
+gradle-app.setting
+!gradle-wrapper.jar
