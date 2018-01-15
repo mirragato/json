@@ -37,7 +37,7 @@ task docker(type: Docker) {
     applicationName = "getjsonformat"
     setEnvironment("SERVER_PORT", "80")
     exposePort(80)
-    addFile('build/libs/validator-all-0.1.jar','vol/getjsonformat-all-0.1.jar')
+    addFile('build/libs/getjsonformat-all-0.1.jar','vol/getjsonformat-all-0.1.jar')
     defaultCommand =  ['java', "-jar", "vol/getjsonformat-all-0.1.jar"]
 
 }
